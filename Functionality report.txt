@@ -1,0 +1,9 @@
+The custom connector takes in the source timezone, destination timezone and the time to convert and converts it into the specifies destination timezone time. 
+
+There are 2 classes used in TimeConvertorOperations.java:
+	1. convertTime 
+	2. convertTimezone
+
+1. The convertTime method serves as a wrapper for the convertTimezone method and is exposed as a custom connector operation. It takes three parameters: sourceTimeZone, destinationTimeZone, and timeToConvert. It calls the convertTimezone method with the provided parameters and returns the result.
+
+2. This convertTimezone method performs the actual time zone conversion. It takes three parameters: sourceTimeZone, destinationTimeZone, and timeToConvert. The timeToConvert parameter represents the time in the format "yyyy-MM-dd HH:mm:ss".

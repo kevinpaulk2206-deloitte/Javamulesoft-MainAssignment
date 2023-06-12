@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:time-convertor="http://www.mulesoft.org/schema/mule/time-convertor" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/time-convertor http://www.mulesoft.org/schema/mule/time-convertor/current/mule-time-convertor.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3f74aea2-6239-4a4b-af5e-ce8c9b4be5df" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="timeconverterFlow" doc:id="316229b4-58a2-4eff-b113-463ed1a62a55" >
+		<http:listener doc:name="Listener" doc:id="b6c79ca3-0c01-4381-8e45-e1a340ad54c8" config-ref="HTTP_Listener_config" path="/timeconverter"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a4d0eb86-f0f2-4990-abfe-36b2a227a4e2" message="Custom controller stars"/>
+		<time-convertor:convert-timezone doc:name="Convert timezone" doc:id="ae3456aa-8c9a-45f1-bf58-fa8c9c06c0d4" sourceTimeZone="Asia/Kolkata" destinationTimeZone="America/New_York" timeToConvert="2023-06-10 12:00:00"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e20dca27-7919-40de-a149-9fb41a2394b3" message="Custom controller ends"/>
+	</flow>
+</mule>

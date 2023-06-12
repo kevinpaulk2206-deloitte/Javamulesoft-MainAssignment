@@ -1,0 +1,19 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:time-convertor="http://www.mulesoft.org/schema/mule/time-convertor"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/time-convertor http://www.mulesoft.org/schema/mule/time-convertor/current/mule-time-convertor.xsd">
+
+    <time-convertor:config name="config" configId="configId">
+        <time-convertor:connection requiredParameter="aValue" />
+    </time-convertor:config>
+
+    <flow name="sayHiFlow">
+        <time-convertor:say-hi person="Mariano Gonzalez"/>
+    </flow>
+
+    <flow name="retrieveInfoFlow">
+        <time-convertor:retrieve-info config-ref="config"/>
+    </flow>
+
+</mule>

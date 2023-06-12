@@ -1,0 +1,87 @@
+package org.mule.extension.customConnector.internal;
+
+import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
+
+import org.mule.runtime.extension.api.annotation.param.MediaType;
+import org.mule.runtime.extension.api.annotation.param.Config;
+import org.mule.runtime.extension.api.annotation.param.Connection;
+
+import org.mule.runtime.http.api.HttpConstants;
+import org.mule.runtime.http.api.HttpRequestOptions;
+import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.HttpRequestOptionsBuilder;
+
+import org.mule.runtime.api.exception.MuleRuntimeException;
+
+import java.time.DateTimeException;
+
+/**
+ * This class is a container for operations, every public method in this class will be taken as an extension operation.
+ */
+public class TimeConvertorOperations {
+
+    /**
+     * Example of an operation that uses the configuration and a connection instance to perform some action.
+     */
+    @MediaType(value = ANY, strict = false)
+    public String retrieveInfo(@Config TimeConvertorConfiguration configuration, @Connection TimeConvertorConnection connection){
+        return "Using Configuration [" + configuration.getConfigId() + "] with Connection id [" + connection.getId() + "]";
+    }
+
+    /**
+     * Example of a simple operation that receives a string parameter and returns a new string message that will be set on the payload.
+     */
+    @MediaType(value = ANY, strict = false)
+    public String sayHi(String person) {
+        return buildHelloMessage(person);
+    }
+
+    /**
+     * Convert time from the source time zone to the target time zone using an external service.
+     */
+    @MediaType(value = ANY, strict = false)
+    public String convertTime(String sourceTimeZone, String targetTimeZone) {
+        try {
+            String convertedTime = callExternalService(sourceTimeZone, targetTimeZone);
+            return "Converted time: " + convertedTime;
+        } catch (MuleRuntimeException e) {
+            return "Failed to convert time. Error: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Private Methods are not exposed as operations
+     */
+    private String buildHelloMessage(String person) {
+        return "Hello " + person + "!!!";
+    }
+
+    private String callExternalService(String sourceTimeZone, String targetTimeZone) {
+        // Set the URL and query parameters for the external service
+        String apiUrl = "https://example.com/timezone-convert";
+        String queryParam = "source=" + sourceTimeZone + "&target=" + targetTimeZone;
+
+        // Create an HTTP client and set the request options
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequestOptions options = HttpRequestOptionsBuilder.newOptions().method(HttpConstants.Method.GET).build();
+
+        try {
+            // Send the HTTP request to the external service
+            String response = httpClient.send(apiUrl + "?" + queryParam, options).getBodyAsString();
+
+            // Parse the response and extract the converted time zone
+            // Modify this part according to the actual response format of the external service
+            String convertedTimeZone = parseResponse(response);
+
+            return convertedTimeZone;
+        } catch (Exception e) {
+            throw new MuleRuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private String parseResponse(String response) {
+        // Modify this method according to the actual response format of the external service
+        // Extract the converted time zone from the response and return it
+        return response;
+    }
+}
